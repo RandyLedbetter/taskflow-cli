@@ -1,12 +1,11 @@
 name: taskflow-cli - Sprint 1
 started: '2025-12-03'
 phase: implementing
-current_spec: task-list
+current_spec: task-done
 
 planning_status: complete
 
 backlog:
-  - task-done
   - task-display
 
 specs:
@@ -105,14 +104,69 @@ specs:
         status: done
         completed: '2025-12-03'
 
+  #=========================================================
+  # SPEC: task-done (READY)
+  #=========================================================
+  task-done:
+    status: in-progress
+    file: docs/specs/task-done.md
+    appetite: small
+    created: '2025-12-03'
+    tasks:
+      #-------------------------------------------------
+      # Task 1: Done Command Handler
+      #-------------------------------------------------
+      - id: task-done-1
+        name: Create done command with validation and output
+        description: |
+          Create the done command handler module with argument parsing,
+          task lookup, status update, and output formatting.
+        files:
+          - src/commands/done.js
+          - tests/done.test.js
+        acceptance_criteria:
+          - parseDoneArgs() extracts task ID from arguments
+          - validateTaskId() rejects non-numeric, negative, decimal IDs
+          - findTaskById() locates task or returns null
+          - markTaskDone() updates status and sets completed date
+          - markTaskDone() returns false if already done (no date change)
+          - formatOutput() shows success message with task details
+          - formatOutput() shows warning for already-done tasks
+          - runDone() orchestrates the full done flow
+          - Error messages are helpful with usage hints
+          - Unit tests cover all validation and edge cases
+        depends_on: []
+        estimate: 1h
+        status: done
+        completed: '2025-12-03'
+
+      #-------------------------------------------------
+      # Task 2: CLI Integration
+      #-------------------------------------------------
+      - id: task-done-2
+        name: Wire up CLI routing for done command
+        description: |
+          Update the CLI entry point to route the "done" command to the
+          handler. Replace placeholder with actual implementation.
+        files:
+          - src/index.js
+        acceptance_criteria:
+          - "tf done <id>" routes to done command handler
+          - "tf done --help" shows done command usage
+          - Exit codes are correct (0 success, 1 error)
+          - End-to-end test verifies task is marked done
+        depends_on:
+          - task-done-1
+        estimate: 0.5h
+        status: pending
+
 notes: |
   COMPLETED:
   - task-storage: 3/3 tasks ✓
   - task-add: 2/2 tasks ✓
+  - task-list: 2/2 tasks ✓
   
-  IN PROGRESS:
-  - task-list: 0/2 tasks
+  READY:
+  - task-done: spec ready, awaiting /create-tasks
   
-  Total estimate for task-list: 2 hours (within 2-3h appetite)
-  
-  Next step: /implement task-list-1
+  Next step: /create-tasks for task-done
