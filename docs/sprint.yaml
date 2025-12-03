@@ -13,7 +13,7 @@ backlog:
 
 specs:
   task-storage:
-    status: in-progress
+    status: done
     file: docs/specs/task-storage.md
     appetite: small-medium
     created: '2025-12-03'
@@ -94,7 +94,8 @@ specs:
         depends_on:
           - task-storage-2
         estimate: 1.5h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
 notes: |
   Tasks created for task-storage spec.

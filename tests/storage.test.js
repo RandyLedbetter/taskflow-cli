@@ -13,8 +13,12 @@ const {
   loadTasks,
   saveTasks,
   getTaskFilePath,
+  getNextId,
+  createTask,
+  getTodayDate,
   TASK_FILE_NAME,
-  SCHEMA_VERSION
+  SCHEMA_VERSION,
+  DEFAULTS
 } = require('../src/storage.js');
 
 // Test in a temporary directory to avoid polluting the project
@@ -301,6 +305,208 @@ describe('loadTasks + saveTasks integration', () => {
     const loadedTasks = loadTasks();
     
     assert.deepStrictEqual(loadedTasks, originalTasks);
+  });
+});
+
+// ============================================
+// getNextId Tests
+// ============================================
+
+describe('getNextId', () => {
+  it('returns 1 for empty array', () => {
+    const result = getNextId([]);
+    assert.strictEqual(result, 1);
+  });
+
+  it('returns 1 for null input', () => {
+    const result = getNextId(null);
+    assert.strictEqual(result, 1);
+  });
+
+  it('returns 1 for undefined input', () => {
+    const result = getNextId(undefined);
+    assert.strictEqual(result, 1);
+  });
+
+  it('returns max + 1 for sequential IDs', () => {
+    const tasks = [
+      { id: 1, text: 'Task 1' },
+      { id: 2, text: 'Task 2' }
+    ];
+    const result = getNextId(tasks);
+    assert.strictEqual(result, 3);
+  });
+
+  it('handles gaps in IDs (returns max + 1, not fills gap)', () => {
+    const tasks = [
+      { id: 1, text: 'Task 1' },
+      { id: 5, text: 'Task 5' }
+    ];
+    const result = getNextId(tasks);
+    assert.strictEqual(result, 6);
+  });
+
+  it('handles single task', () => {
+    const tasks = [{ id: 1, text: 'Only task' }];
+    const result = getNextId(tasks);
+    assert.strictEqual(result, 2);
+  });
+
+  it('handles tasks with high IDs', () => {
+    const tasks = [
+      { id: 100, text: 'Task 100' },
+      { id: 50, text: 'Task 50' }
+    ];
+    const result = getNextId(tasks);
+    assert.strictEqual(result, 101);
+  });
+
+  it('handles tasks without id field', () => {
+    const tasks = [
+      { id: 1, text: 'Has ID' },
+      { text: 'No ID' }
+    ];
+    const result = getNextId(tasks);
+    assert.strictEqual(result, 2);
+  });
+});
+
+// ============================================
+// createTask Tests
+// ============================================
+
+describe('createTask', () => {
+  it('creates task with text', () => {
+    const task = createTask('Test task');
+    assert.strictEqual(task.text, 'Test task');
+  });
+
+  it('trims whitespace from text', () => {
+    const task = createTask('  Trimmed task  ');
+    assert.strictEqual(task.text, 'Trimmed task');
+  });
+
+  it('applies default priority (medium)', () => {
+    const task = createTask('Test task');
+    assert.strictEqual(task.priority, DEFAULTS.priority);
+    assert.strictEqual(task.priority, 'medium');
+  });
+
+  it('applies default tags (empty array)', () => {
+    const task = createTask('Test task');
+    assert.deepStrictEqual(task.tags, DEFAULTS.tags);
+    assert.deepStrictEqual(task.tags, []);
+  });
+
+  it('applies default status (open)', () => {
+    const task = createTask('Test task');
+    assert.strictEqual(task.status, DEFAULTS.status);
+    assert.strictEqual(task.status, 'open');
+  });
+
+  it('sets created to today date', () => {
+    const task = createTask('Test task');
+    const today = getTodayDate();
+    assert.strictEqual(task.created, today);
+  });
+
+  it('sets completed to null by default', () => {
+    const task = createTask('Test task');
+    assert.strictEqual(task.completed, null);
+  });
+
+  it('sets id to null by default (caller should set)', () => {
+    const task = createTask('Test task');
+    assert.strictEqual(task.id, null);
+  });
+
+  it('allows overriding priority', () => {
+    const task = createTask('Test task', { priority: 'high' });
+    assert.strictEqual(task.priority, 'high');
+  });
+
+  it('allows overriding tags', () => {
+    const task = createTask('Test task', { tags: ['bug', 'urgent'] });
+    assert.deepStrictEqual(task.tags, ['bug', 'urgent']);
+  });
+
+  it('allows overriding status', () => {
+    const task = createTask('Test task', { status: 'done' });
+    assert.strictEqual(task.status, 'done');
+  });
+
+  it('allows overriding created date', () => {
+    const task = createTask('Test task', { created: '2025-01-01' });
+    assert.strictEqual(task.created, '2025-01-01');
+  });
+
+  it('allows setting completed date', () => {
+    const task = createTask('Test task', { completed: '2025-12-03' });
+    assert.strictEqual(task.completed, '2025-12-03');
+  });
+
+  it('allows setting id', () => {
+    const task = createTask('Test task', { id: 5 });
+    assert.strictEqual(task.id, 5);
+  });
+
+  it('creates independent copy of tags array', () => {
+    const originalTags = ['bug'];
+    const task = createTask('Test task', { tags: originalTags });
+    
+    // Modify original array
+    originalTags.push('modified');
+    
+    // Task tags should not be affected
+    assert.deepStrictEqual(task.tags, ['bug']);
+  });
+
+  it('throws error for empty text', () => {
+    assert.throws(
+      () => createTask(''),
+      (err) => {
+        assert.ok(err.message.includes('Task text is required'));
+        return true;
+      }
+    );
+  });
+
+  it('throws error for null text', () => {
+    assert.throws(
+      () => createTask(null),
+      (err) => {
+        assert.ok(err.message.includes('Task text is required'));
+        return true;
+      }
+    );
+  });
+
+  it('throws error for non-string text', () => {
+    assert.throws(
+      () => createTask(123),
+      (err) => {
+        assert.ok(err.message.includes('must be a string'));
+        return true;
+      }
+    );
+  });
+});
+
+// ============================================
+// getTodayDate Tests
+// ============================================
+
+describe('getTodayDate', () => {
+  it('returns date in YYYY-MM-DD format', () => {
+    const result = getTodayDate();
+    assert.match(result, /^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it('returns current date', () => {
+    const result = getTodayDate();
+    const now = new Date();
+    const expected = now.toISOString().split('T')[0];
+    assert.strictEqual(result, expected);
   });
 });
 

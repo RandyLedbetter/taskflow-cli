@@ -85,17 +85,33 @@ function saveTasks(tasks) {
   fs.writeFileSync(filePath, yamlContent, 'utf8');
 }
 
+// Default values for new tasks
+const DEFAULTS = {
+  priority: 'medium',
+  tags: [],
+  status: 'open'
+};
+
+/**
+ * Get today's date in YYYY-MM-DD format
+ * @returns {string} ISO date string
+ */
+function getTodayDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
 /**
  * Get the next available task ID
  * @param {Array} tasks - Current tasks array
  * @returns {number} Next ID (max existing ID + 1, or 1 if empty)
  */
 function getNextId(tasks) {
-  // TODO: Implement in task-storage-3
   if (!tasks || tasks.length === 0) {
     return 1;
   }
-  const maxId = Math.max(...tasks.map(t => t.id || 0));
+  // Find the maximum ID, handling tasks that might not have an id
+  const ids = tasks.map(t => t.id || 0);
+  const maxId = Math.max(...ids);
   return maxId + 1;
 }
 
@@ -106,8 +122,19 @@ function getNextId(tasks) {
  * @returns {Object} Complete task object with all fields
  */
 function createTask(text, options = {}) {
-  // TODO: Implement in task-storage-3
-  return { text };
+  if (!text || typeof text !== 'string') {
+    throw new Error('Task text is required and must be a string');
+  }
+
+  return {
+    id: options.id || null, // ID should be set by caller using getNextId
+    text: text.trim(),
+    priority: options.priority || DEFAULTS.priority,
+    tags: Array.isArray(options.tags) ? [...options.tags] : DEFAULTS.tags,
+    status: options.status || DEFAULTS.status,
+    created: options.created || getTodayDate(),
+    completed: options.completed !== undefined ? options.completed : null
+  };
 }
 
 module.exports = {
@@ -116,6 +143,8 @@ module.exports = {
   saveTasks,
   getNextId,
   createTask,
+  getTodayDate,
   TASK_FILE_NAME,
-  SCHEMA_VERSION
+  SCHEMA_VERSION,
+  DEFAULTS
 };
