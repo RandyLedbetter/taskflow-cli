@@ -40,7 +40,8 @@ specs:
   # SPEC: task-add (IN PROGRESS)
   #=========================================================
   task-add:
-    status: in-progress
+    status: done
+    completed: '2025-12-03'
     file: docs/specs/task-add.md
     appetite: small
     created: '2025-12-03'
@@ -92,7 +93,8 @@ specs:
         depends_on:
           - task-add-1
         estimate: 1h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
 notes: |
   task-storage spec COMPLETE (3/3 tasks done)
