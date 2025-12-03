@@ -108,10 +108,10 @@ specs:
   # SPEC: task-done (READY)
   #=========================================================
   task-done:
-    status: in-progress
+    status: done
     file: docs/specs/task-done.md
     appetite: small
-    created: '2025-12-03'
+    completed: '2025-12-03'
     tasks:
       #-------------------------------------------------
       # Task 1: Done Command Handler
@@ -158,15 +158,17 @@ specs:
         depends_on:
           - task-done-1
         estimate: 0.5h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
 notes: |
   COMPLETED:
   - task-storage: 3/3 tasks ✓
   - task-add: 2/2 tasks ✓
   - task-list: 2/2 tasks ✓
+  - task-done: 2/2 tasks ✓
   
-  READY:
-  - task-done: spec ready, awaiting /create-tasks
+  BACKLOG:
+  - task-display: showing individual task details
   
-  Next step: /create-tasks for task-done
+  MVP COMPLETE! 🎉

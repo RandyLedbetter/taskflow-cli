@@ -8,6 +8,7 @@
 const packageJson = require('../package.json');
 const { runAdd } = require('./commands/add');
 const { runList } = require('./commands/list');
+const { runDone } = require('./commands/done');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -68,10 +69,9 @@ switch (command) {
   }
 
   case 'done': {
-    // TODO: Implement in task-done spec
-    console.log('Done command not yet implemented.');
-    console.log('Coming soon!');
-    process.exit(0);
+    const result = runDone(commandArgs);
+    console.log(result.output);
+    process.exit(result.exitCode);
     break;
   }
 
