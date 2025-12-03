@@ -1,0 +1,104 @@
+name: taskflow-cli - Sprint 1
+started: '2025-12-03'
+phase: implementing
+current_spec: task-storage
+
+planning_status: complete
+
+backlog:
+  - task-add
+  - task-list
+  - task-done
+  - task-display
+
+specs:
+  task-storage:
+    status: in-progress
+    file: docs/specs/task-storage.md
+    appetite: small-medium
+    created: '2025-12-03'
+    tasks:
+      #-------------------------------------------------
+      # Task 1: Project Setup
+      #-------------------------------------------------
+      - id: task-storage-1
+        name: Project scaffolding and dependencies
+        description: |
+          Initialize the Node.js project structure and install dependencies.
+          This sets up the foundation for all TaskFlow CLI development.
+        files:
+          - package.json
+          - src/index.js
+          - src/storage.js
+          - .gitignore
+        acceptance_criteria:
+          - package.json exists with name "taskflow-cli" and bin entry for "tf"
+          - js-yaml is listed as a dependency
+          - src/ folder structure is created
+          - Running "npm install" succeeds
+          - Basic CLI entry point responds to "tf --version"
+        depends_on: []
+        estimate: 1h
+        status: done
+        completed: '2025-12-03'
+
+      #-------------------------------------------------
+      # Task 2: Core Storage Functions
+      #-------------------------------------------------
+      - id: task-storage-2
+        name: Implement loadTasks and saveTasks
+        description: |
+          Create the core storage module with functions to read and write
+          the .taskflow.yaml file. Handle file creation and error cases.
+        files:
+          - src/storage.js
+          - tests/storage.test.js
+        acceptance_criteria:
+          - loadTasks() returns empty array when file doesn't exist
+          - loadTasks() returns empty array when file is empty
+          - loadTasks() parses valid YAML and returns tasks array
+          - loadTasks() throws descriptive error for invalid YAML
+          - saveTasks() creates file if it doesn't exist
+          - saveTasks() writes valid YAML with version and tasks
+          - getTaskFilePath() returns absolute path to .taskflow.yaml in cwd
+          - All functions have passing unit tests
+        depends_on:
+          - task-storage-1
+        estimate: 2h
+        status: pending
+
+      #-------------------------------------------------
+      # Task 3: Task Utilities
+      #-------------------------------------------------
+      - id: task-storage-3
+        name: Implement getNextId and createTask
+        description: |
+          Add utility functions for ID generation and task creation
+          with sensible defaults applied.
+        files:
+          - src/storage.js
+          - tests/storage.test.js
+        acceptance_criteria:
+          - getNextId([]) returns 1
+          - getNextId([{id:1}, {id:2}]) returns 3
+          - getNextId([{id:1}, {id:5}]) returns 6 (handles gaps)
+          - createTask("text") returns task with all defaults applied
+          - createTask("text", {priority:"high"}) overrides default priority
+          - Default priority is "medium"
+          - Default tags is []
+          - Default status is "open"
+          - Default created is today's date (YYYY-MM-DD)
+          - Default completed is null
+          - All functions have passing unit tests
+        depends_on:
+          - task-storage-2
+        estimate: 1.5h
+        status: pending
+
+notes: |
+  Tasks created for task-storage spec.
+  Total estimate: 4.5 hours (within appetite of 4-6h)
+  
+  Dependency chain: task-storage-1 → task-storage-2 → task-storage-3
+  
+  Next step: Use /implement task-storage-1 to begin implementation.

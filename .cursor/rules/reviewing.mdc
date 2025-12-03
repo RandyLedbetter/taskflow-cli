@@ -1,0 +1,61 @@
+---
+description: Rules for code review phase
+globs:
+  - .git/**
+  - "*.diff"
+  - "*.patch"
+---
+
+# Code Review Rules
+
+When reviewing code or preparing for review:
+
+## Review Checklist
+
+### Correctness
+- [ ] Does the code do what the spec requires?
+- [ ] Are all acceptance criteria met?
+- [ ] Are edge cases handled?
+- [ ] Are errors handled appropriately?
+
+### Quality
+- [ ] Is the code readable and well-organized?
+- [ ] Does it follow project standards?
+- [ ] Is there appropriate test coverage?
+- [ ] Are there any obvious performance issues?
+
+### Security
+- [ ] Is user input validated?
+- [ ] Are credentials/secrets handled properly?
+- [ ] Are there any obvious security vulnerabilities?
+
+### Documentation
+- [ ] Are complex parts documented?
+- [ ] Is the spec updated if requirements changed?
+- [ ] Are any new patterns documented in standards?
+
+## Giving Feedback
+
+### Be Constructive
+- Focus on the code, not the person
+- Explain why, not just what
+- Suggest alternatives when criticizing
+
+### Prioritize
+- **Must Fix** - Security issues, bugs, spec violations
+- **Should Fix** - Code quality, maintainability
+- **Nice to Have** - Style preferences, optimizations
+
+### Be Specific
+- Point to specific lines/files
+- Provide examples of preferred approach
+- Link to relevant standards/documentation
+
+## Preparing for Review
+
+Before requesting review:
+1. Self-review your changes
+2. Ensure tests pass
+3. Update documentation
+4. Write clear commit messages/PR description
+5. Link to relevant spec

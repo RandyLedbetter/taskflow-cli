@@ -1,0 +1,43 @@
+---
+description: Rules for planning and specification phases
+globs:
+  - docs/specs/**
+  - docs/product/**
+  - docs/sprint.yaml
+  - prompts/**
+---
+
+# Planning Phase Rules
+
+When working on planning, specs, or product documentation:
+
+## Specification Quality
+
+1. **Be Specific** - Avoid vague requirements. Include concrete examples.
+2. **Define Boundaries** - Explicitly state what's in/out of scope
+3. **Consider Edge Cases** - Document error states and edge cases
+4. **Keep It Testable** - Every requirement should be verifiable
+
+## Structure
+
+Use the spec template at `docs/specs/_template.md` for new features. Include:
+
+- **Problem Statement** - What user problem are we solving?
+- **Proposed Solution** - How will we solve it?
+- **User Stories** - Who needs this and why?
+- **Acceptance Criteria** - How do we know it's done?
+- **Technical Approach** - High-level implementation plan
+- **Out of Scope** - What we're explicitly NOT doing
+
+## Sprint Management
+
+When updating `docs/sprint.yaml`:
+- Update phase as work progresses (planning → implementing → testing → done)
+- Mark specs with status: pending, in-progress, done
+- Keep notes about blockers or decisions
+
+## Consistency
+
+- Reference existing patterns from `docs/standards/`
+- Ensure new specs align with product vision in `docs/product/vision.md`
+- Check roadmap priorities before starting new features

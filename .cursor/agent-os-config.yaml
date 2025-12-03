@@ -1,0 +1,9 @@
+cloud_agents:
+  enabled: true
+  max_parallel: 2
+  auto_launch: false
+  require_approval: true
+workflows:
+  implement_parallel:
+    description: Launch multiple agents to implement independent tasks
+    max_agents: 4

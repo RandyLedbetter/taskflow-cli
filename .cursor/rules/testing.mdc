@@ -1,0 +1,70 @@
+---
+description: Rules for testing phase
+globs:
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "**/test/**"
+  - "**/tests/**"
+  - "**/__tests__/**"
+---
+
+# Testing Rules
+
+When writing or working with tests:
+
+## Test Philosophy
+
+1. **Test Behavior, Not Implementation** - Tests should verify what code does, not how
+2. **Keep Tests Independent** - Each test should run in isolation
+3. **Make Tests Readable** - Tests serve as documentation
+4. **Test the Spec** - Verify acceptance criteria from specifications
+
+## Test Structure
+
+### Naming
+- Describe what is being tested and expected outcome
+- Use format: `[unit] should [expected behavior] when [condition]`
+
+### Organization
+```
+describe('[Component/Function Name]', () => {
+  describe('[method/scenario]', () => {
+    it('should [expected behavior]', () => {
+      // Arrange - Set up test data
+      // Act - Execute the code
+      // Assert - Verify results
+    });
+  });
+});
+```
+
+## Coverage Priorities
+
+1. **Critical Paths** - Test the happy path thoroughly
+2. **Edge Cases** - Test boundaries and error conditions
+3. **Acceptance Criteria** - Every AC from spec should have a test
+4. **Regressions** - Add tests when fixing bugs
+
+## Test Types
+
+### Unit Tests
+- Test individual functions/methods
+- Mock external dependencies
+- Should be fast and numerous
+
+### Integration Tests
+- Test component interactions
+- Use realistic data
+- May use real dependencies
+
+### E2E Tests
+- Test complete user workflows
+- Run against full application
+- Focus on critical user journeys
+
+## When Tests Fail
+
+1. **Read the error message** - Understand what failed
+2. **Check if test is correct** - Maybe the test needs updating
+3. **Check if code is correct** - Fix the implementation
+4. **Update spec if needed** - Document any requirement changes

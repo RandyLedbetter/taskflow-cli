@@ -1,0 +1,67 @@
+---
+description: Rules for implementation phase
+globs:
+  - src/**
+  - lib/**
+  - app/**
+  - pages/**
+  - components/**
+  - "*.ts"
+  - "*.tsx"
+  - "*.js"
+  - "*.jsx"
+  - "*.py"
+  - "*.go"
+  - "*.rs"
+---
+
+# Implementation Rules
+
+When writing code:
+
+## Before Starting
+
+1. **Read the Spec** - Check `docs/specs/` for the feature specification
+2. **Review Standards** - Check `docs/standards/coding.md` for patterns
+3. **Check Sprint** - Verify this task is in `docs/sprint.yaml`
+
+## Code Quality
+
+### General
+- Write clear, self-documenting code
+- Keep functions/methods focused and small
+- Handle errors appropriately
+- Add comments for complex logic only
+
+### Naming
+- Use descriptive, intention-revealing names
+- Follow language conventions (camelCase, snake_case, etc.)
+- Avoid abbreviations unless widely understood
+
+### Structure
+- Organize code logically
+- Keep related code together
+- Avoid deep nesting (max 3 levels)
+- Extract repeated code into functions
+
+## Implementation Steps
+
+1. **Understand** - Make sure you understand what to build
+2. **Plan** - Identify files to create/modify
+3. **Implement** - Write the code in small increments
+4. **Test** - Verify it works as expected
+5. **Document** - Update any affected documentation
+
+## Progress Tracking
+
+After completing work:
+- Update task status in `docs/sprint.yaml`
+- Note any deviations from spec
+- Flag any concerns for review
+
+## When Stuck
+
+If requirements are unclear:
+1. Check the spec again
+2. Look for similar patterns in codebase
+3. Ask for clarification before assuming

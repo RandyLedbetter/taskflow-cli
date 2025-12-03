@@ -1,0 +1,30 @@
+{
+  "name": "taskflow-cli",
+  "version": "0.1.0",
+  "description": "A minimalist CLI task manager for developers",
+  "main": "src/index.js",
+  "bin": {
+    "tf": "src/index.js"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "cli",
+    "task",
+    "todo",
+    "productivity",
+    "terminal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

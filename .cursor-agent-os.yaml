@@ -1,0 +1,16 @@
+# cursor-agent-os configuration
+# IMPORTANT: Do not commit this file - it contains your API key
+#
+# To get your Cursor API key:
+#   Cursor → Settings → Cloud Agents → API Keys
+#
+# Environment variable CURSOR_API_KEY takes priority over this file
+
+cursor_api_key: key_81e86475b740d06b2b7a895385015ab2d5bfb6fccc5deb37d52678880f442a80
+cloud_agents:
+  enabled: true
+  auto_create_pr: false
+project:
+  name: taskflow-cli
+  type: greenfield
+  initialized: '2025-12-03'
