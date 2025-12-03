@@ -1,106 +1,103 @@
 name: taskflow-cli - Sprint 1
 started: '2025-12-03'
 phase: implementing
-current_spec: task-storage
+current_spec: task-add
 
 planning_status: complete
 
 backlog:
-  - task-add
   - task-list
   - task-done
   - task-display
 
 specs:
+  #=========================================================
+  # SPEC: task-storage (COMPLETE)
+  #=========================================================
   task-storage:
     status: done
     file: docs/specs/task-storage.md
     appetite: small-medium
     created: '2025-12-03'
+    completed: '2025-12-03'
     tasks:
-      #-------------------------------------------------
-      # Task 1: Project Setup
-      #-------------------------------------------------
       - id: task-storage-1
         name: Project scaffolding and dependencies
-        description: |
-          Initialize the Node.js project structure and install dependencies.
-          This sets up the foundation for all TaskFlow CLI development.
-        files:
-          - package.json
-          - src/index.js
-          - src/storage.js
-          - .gitignore
-        acceptance_criteria:
-          - package.json exists with name "taskflow-cli" and bin entry for "tf"
-          - js-yaml is listed as a dependency
-          - src/ folder structure is created
-          - Running "npm install" succeeds
-          - Basic CLI entry point responds to "tf --version"
-        depends_on: []
-        estimate: 1h
         status: done
         completed: '2025-12-03'
 
-      #-------------------------------------------------
-      # Task 2: Core Storage Functions
-      #-------------------------------------------------
       - id: task-storage-2
         name: Implement loadTasks and saveTasks
-        description: |
-          Create the core storage module with functions to read and write
-          the .taskflow.yaml file. Handle file creation and error cases.
-        files:
-          - src/storage.js
-          - tests/storage.test.js
-        acceptance_criteria:
-          - loadTasks() returns empty array when file doesn't exist
-          - loadTasks() returns empty array when file is empty
-          - loadTasks() parses valid YAML and returns tasks array
-          - loadTasks() throws descriptive error for invalid YAML
-          - saveTasks() creates file if it doesn't exist
-          - saveTasks() writes valid YAML with version and tasks
-          - getTaskFilePath() returns absolute path to .taskflow.yaml in cwd
-          - All functions have passing unit tests
-        depends_on:
-          - task-storage-1
-        estimate: 2h
         status: done
         completed: '2025-12-03'
 
-      #-------------------------------------------------
-      # Task 3: Task Utilities
-      #-------------------------------------------------
       - id: task-storage-3
         name: Implement getNextId and createTask
+        status: done
+        completed: '2025-12-03'
+
+  #=========================================================
+  # SPEC: task-add (IN PROGRESS)
+  #=========================================================
+  task-add:
+    status: in-progress
+    file: docs/specs/task-add.md
+    appetite: small
+    created: '2025-12-03'
+    tasks:
+      #-------------------------------------------------
+      # Task 1: Add Command Handler
+      #-------------------------------------------------
+      - id: task-add-1
+        name: Create add command with argument parsing
         description: |
-          Add utility functions for ID generation and task creation
-          with sensible defaults applied.
+          Create the add command handler module with argument parsing,
+          validation, and output formatting. This is the core logic.
         files:
-          - src/storage.js
-          - tests/storage.test.js
+          - src/commands/add.js
+          - tests/add.test.js
         acceptance_criteria:
-          - getNextId([]) returns 1
-          - getNextId([{id:1}, {id:2}]) returns 3
-          - getNextId([{id:1}, {id:5}]) returns 6 (handles gaps)
-          - createTask("text") returns task with all defaults applied
-          - createTask("text", {priority:"high"}) overrides default priority
-          - Default priority is "medium"
-          - Default tags is []
-          - Default status is "open"
-          - Default created is today's date (YYYY-MM-DD)
-          - Default completed is null
-          - All functions have passing unit tests
-        depends_on:
-          - task-storage-2
+          - parseAddArgs() extracts text from first argument
+          - parseAddArgs() handles --priority and -p flags
+          - parseAddArgs() handles multiple --tag and -t flags
+          - validateAddInput() rejects empty/whitespace text
+          - validateAddInput() rejects invalid priority values
+          - validateAddInput() accepts priority case-insensitively
+          - formatOutput() shows task ID, text, priority, and tags
+          - runAdd() creates task using storage module
+          - runAdd() outputs success message
+          - Unit tests cover all parsing and validation cases
+        depends_on: []
         estimate: 1.5h
         status: done
         completed: '2025-12-03'
 
+      #-------------------------------------------------
+      # Task 2: CLI Integration
+      #-------------------------------------------------
+      - id: task-add-2
+        name: Wire up CLI routing and error handling
+        description: |
+          Update the CLI entry point to route the "add" command to the
+          handler. Add proper error handling and help text.
+        files:
+          - src/index.js
+          - tests/add.test.js
+        acceptance_criteria:
+          - "tf add" routes to add command handler
+          - "tf add --help" shows add command usage
+          - Errors display nicely with usage hints
+          - Exit codes are correct (0 success, 1 error)
+          - Integration test verifies end-to-end flow
+        depends_on:
+          - task-add-1
+        estimate: 1h
+        status: pending
+
 notes: |
-  Tasks created for task-storage spec.
-  Total estimate: 4.5 hours (within appetite of 4-6h)
+  task-storage spec COMPLETE (3/3 tasks done)
+  task-add spec IN PROGRESS (0/2 tasks)
   
-  Dependency chain: task-storage-1 → task-storage-2 → task-storage-3
+  Total estimate for task-add: 2.5 hours (within 2-3h appetite)
   
-  Next step: Use /implement task-storage-1 to begin implementation.
+  Next step: /implement task-add-1
