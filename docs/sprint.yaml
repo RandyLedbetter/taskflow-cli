@@ -1,12 +1,11 @@
 name: taskflow-cli - Sprint 1
 started: '2025-12-03'
 phase: implementing
-current_spec: task-add
+current_spec: task-list
 
 planning_status: complete
 
 backlog:
-  - task-list
   - task-done
   - task-display
 
@@ -18,56 +17,66 @@ specs:
     status: done
     file: docs/specs/task-storage.md
     appetite: small-medium
-    created: '2025-12-03'
     completed: '2025-12-03'
     tasks:
       - id: task-storage-1
         name: Project scaffolding and dependencies
         status: done
-        completed: '2025-12-03'
-
       - id: task-storage-2
         name: Implement loadTasks and saveTasks
         status: done
-        completed: '2025-12-03'
-
       - id: task-storage-3
         name: Implement getNextId and createTask
         status: done
-        completed: '2025-12-03'
 
   #=========================================================
-  # SPEC: task-add (IN PROGRESS)
+  # SPEC: task-add (COMPLETE)
   #=========================================================
   task-add:
     status: done
-    completed: '2025-12-03'
     file: docs/specs/task-add.md
+    appetite: small
+    completed: '2025-12-03'
+    tasks:
+      - id: task-add-1
+        name: Create add command with argument parsing
+        status: done
+      - id: task-add-2
+        name: Wire up CLI routing and error handling
+        status: done
+
+  #=========================================================
+  # SPEC: task-list (IN PROGRESS)
+  #=========================================================
+  task-list:
+    status: in-progress
+    file: docs/specs/task-list.md
     appetite: small
     created: '2025-12-03'
     tasks:
       #-------------------------------------------------
-      # Task 1: Add Command Handler
+      # Task 1: List Command Handler
       #-------------------------------------------------
-      - id: task-add-1
-        name: Create add command with argument parsing
+      - id: task-list-1
+        name: Create list command with filtering and formatting
         description: |
-          Create the add command handler module with argument parsing,
-          validation, and output formatting. This is the core logic.
+          Create the list command handler module with argument parsing,
+          filtering, sorting, and output formatting.
         files:
-          - src/commands/add.js
-          - tests/add.test.js
+          - src/commands/list.js
+          - tests/list.test.js
         acceptance_criteria:
-          - parseAddArgs() extracts text from first argument
-          - parseAddArgs() handles --priority and -p flags
-          - parseAddArgs() handles multiple --tag and -t flags
-          - validateAddInput() rejects empty/whitespace text
-          - validateAddInput() rejects invalid priority values
-          - validateAddInput() accepts priority case-insensitively
-          - formatOutput() shows task ID, text, priority, and tags
-          - runAdd() creates task using storage module
-          - runAdd() outputs success message
-          - Unit tests cover all parsing and validation cases
+          - parseListArgs() handles --done, --all/-a, --priority/-p, --tag/-t
+          - filterTasks() filters by status (open/done/all)
+          - filterTasks() filters by priority
+          - filterTasks() filters by tag
+          - filterTasks() combines filters with AND logic
+          - sortTasks() sorts by priority (high→medium→low) then by ID
+          - formatTask() shows emoji indicator based on priority/status
+          - formatTask() includes tags when present
+          - formatTaskList() handles empty states with context-aware messages
+          - runList() loads tasks and outputs formatted list
+          - Unit tests cover all filtering, sorting, and formatting cases
         depends_on: []
         estimate: 1.5h
         status: done
@@ -76,30 +85,33 @@ specs:
       #-------------------------------------------------
       # Task 2: CLI Integration
       #-------------------------------------------------
-      - id: task-add-2
-        name: Wire up CLI routing and error handling
+      - id: task-list-2
+        name: Wire up CLI routing for list command
         description: |
-          Update the CLI entry point to route the "add" command to the
-          handler. Add proper error handling and help text.
+          Update the CLI entry point to route the "list" command to the
+          handler. Replace placeholder with actual implementation.
         files:
           - src/index.js
-          - tests/add.test.js
+          - tests/list.test.js
         acceptance_criteria:
-          - "tf add" routes to add command handler
-          - "tf add --help" shows add command usage
-          - Errors display nicely with usage hints
+          - "tf list" routes to list command handler
+          - "tf list --help" shows list command usage
+          - All filter flags work from CLI
           - Exit codes are correct (0 success, 1 error)
-          - Integration test verifies end-to-end flow
+          - Integration test verifies end-to-end filtering
         depends_on:
-          - task-add-1
-        estimate: 1h
-        status: done
-        completed: '2025-12-03'
+          - task-list-1
+        estimate: 0.5h
+        status: pending
 
 notes: |
-  task-storage spec COMPLETE (3/3 tasks done)
-  task-add spec IN PROGRESS (0/2 tasks)
+  COMPLETED:
+  - task-storage: 3/3 tasks ✓
+  - task-add: 2/2 tasks ✓
   
-  Total estimate for task-add: 2.5 hours (within 2-3h appetite)
+  IN PROGRESS:
+  - task-list: 0/2 tasks
   
-  Next step: /implement task-add-1
+  Total estimate for task-list: 2 hours (within 2-3h appetite)
+  
+  Next step: /implement task-list-1
