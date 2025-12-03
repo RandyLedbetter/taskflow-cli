@@ -7,6 +7,7 @@
 
 const packageJson = require('../package.json');
 const { runAdd } = require('./commands/add');
+const { runList } = require('./commands/list');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -30,7 +31,7 @@ Usage:
 
 Commands:
   add <text>       Add a new task
-  list             List all tasks
+  list             List and filter tasks
   done <id>        Mark a task as complete
 
 Options:
@@ -41,6 +42,8 @@ Examples:
   tf add "Fix login bug"
   tf add "Urgent task" -p high -t backend
   tf list
+  tf list --all
+  tf list -p high -t backend
   tf done 1
 
 Run 'tf <command> --help' for more information on a specific command.
@@ -58,10 +61,9 @@ switch (command) {
   }
 
   case 'list': {
-    // TODO: Implement in task-list spec
-    console.log('List command not yet implemented.');
-    console.log('Coming soon!');
-    process.exit(0);
+    const result = runList(commandArgs);
+    console.log(result.output);
+    process.exit(result.exitCode);
     break;
   }
 

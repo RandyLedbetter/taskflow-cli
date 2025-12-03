@@ -49,10 +49,10 @@ specs:
   # SPEC: task-list (IN PROGRESS)
   #=========================================================
   task-list:
-    status: in-progress
+    status: done
     file: docs/specs/task-list.md
     appetite: small
-    created: '2025-12-03'
+    completed: '2025-12-03'
     tasks:
       #-------------------------------------------------
       # Task 1: List Command Handler
@@ -102,7 +102,8 @@ specs:
         depends_on:
           - task-list-1
         estimate: 0.5h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
 notes: |
   COMPLETED:
