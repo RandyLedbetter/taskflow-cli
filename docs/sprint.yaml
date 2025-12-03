@@ -1,12 +1,11 @@
 name: taskflow-cli - Sprint 1
 started: '2025-12-03'
 phase: implementing
-current_spec: task-done
+current_spec: task-display
 
 planning_status: complete
 
-backlog:
-  - task-display
+backlog: []
 
 specs:
   #=========================================================
@@ -161,6 +160,63 @@ specs:
         status: done
         completed: '2025-12-03'
 
+  #=========================================================
+  # SPEC: task-display (READY)
+  #=========================================================
+  task-display:
+    status: in-progress
+    file: docs/specs/task-display.md
+    appetite: small
+    created: '2025-12-03'
+    tasks:
+      #-------------------------------------------------
+      # Task 1: Show Command Handler
+      #-------------------------------------------------
+      - id: task-display-1
+        name: Create show command with formatting
+        description: |
+          Create the show command handler module with argument parsing,
+          task lookup, and detailed output formatting.
+        files:
+          - src/commands/show.js
+          - tests/show.test.js
+        acceptance_criteria:
+          - parseShowArgs() extracts task ID from arguments
+          - Reuse validateTaskId pattern from done.js
+          - Reuse findTaskById pattern from done.js
+          - formatTaskDetails() shows all task fields
+          - formatTaskDetails() omits Tags line when empty
+          - formatTaskDetails() omits Completed line for open tasks
+          - formatTaskDetails() shows checkmark for done status
+          - runShow() orchestrates the full show flow
+          - Error messages match done command style
+          - Unit tests cover formatting and edge cases
+        depends_on: []
+        estimate: 1h
+        status: done
+        completed: '2025-12-03'
+
+      #-------------------------------------------------
+      # Task 2: CLI Integration
+      #-------------------------------------------------
+      - id: task-display-2
+        name: Wire up CLI routing for show command
+        description: |
+          Update the CLI entry point to route the "show" command to the
+          handler. Update global help with new command.
+        files:
+          - src/index.js
+        acceptance_criteria:
+          - "tf show <id>" routes to show command handler
+          - "tf show --help" shows show command usage
+          - Global help includes show command
+          - Exit codes are correct (0 success, 1 error)
+          - End-to-end test verifies task details display
+        depends_on:
+          - task-display-1
+        estimate: 0.5h
+        status: pending
+
 notes: |
   COMPLETED:
   - task-storage: 3/3 tasks ✓
@@ -168,7 +224,7 @@ notes: |
   - task-list: 2/2 tasks ✓
   - task-done: 2/2 tasks ✓
   
-  BACKLOG:
-  - task-display: showing individual task details
+  READY:
+  - task-display: spec ready, awaiting /create-tasks
   
-  MVP COMPLETE! 🎉
+  MVP COMPLETE! 🎉 Now adding polish features.
