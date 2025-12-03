@@ -25,8 +25,40 @@ function getTaskFilePath() {
  * @throws {Error} If file exists but contains invalid YAML
  */
 function loadTasks() {
-  // TODO: Implement in task-storage-2
-  return [];
+  const filePath = getTaskFilePath();
+
+  // Return empty array if file doesn't exist
+  if (!fs.existsSync(filePath)) {
+    return [];
+  }
+
+  // Read file contents
+  const contents = fs.readFileSync(filePath, 'utf8');
+
+  // Return empty array if file is empty
+  if (!contents || contents.trim() === '') {
+    return [];
+  }
+
+  // Parse YAML
+  let data;
+  try {
+    data = yaml.load(contents);
+  } catch (err) {
+    throw new Error(`Invalid .taskflow.yaml: ${err.message}`);
+  }
+
+  // Handle null/undefined data (empty YAML)
+  if (!data) {
+    return [];
+  }
+
+  // Handle missing or null tasks array
+  if (!data.tasks || !Array.isArray(data.tasks)) {
+    return [];
+  }
+
+  return data.tasks;
 }
 
 /**
@@ -34,7 +66,23 @@ function loadTasks() {
  * @param {Array} tasks - Array of tasks to save
  */
 function saveTasks(tasks) {
-  // TODO: Implement in task-storage-2
+  const filePath = getTaskFilePath();
+
+  const data = {
+    version: SCHEMA_VERSION,
+    tasks: tasks || []
+  };
+
+  // Convert to YAML with nice formatting
+  const yamlContent = yaml.dump(data, {
+    indent: 2,
+    lineWidth: -1, // Don't wrap lines
+    noRefs: true,  // Don't use YAML references
+    sortKeys: false // Preserve key order
+  });
+
+  // Write to file (creates if doesn't exist)
+  fs.writeFileSync(filePath, yamlContent, 'utf8');
 }
 
 /**
@@ -44,7 +92,11 @@ function saveTasks(tasks) {
  */
 function getNextId(tasks) {
   // TODO: Implement in task-storage-3
-  return 1;
+  if (!tasks || tasks.length === 0) {
+    return 1;
+  }
+  const maxId = Math.max(...tasks.map(t => t.id || 0));
+  return maxId + 1;
 }
 
 /**
@@ -67,4 +119,3 @@ module.exports = {
   TASK_FILE_NAME,
   SCHEMA_VERSION
 };
-

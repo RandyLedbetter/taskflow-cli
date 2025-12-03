@@ -65,7 +65,8 @@ specs:
         depends_on:
           - task-storage-1
         estimate: 2h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
       #-------------------------------------------------
       # Task 3: Task Utilities
