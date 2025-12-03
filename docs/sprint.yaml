@@ -164,10 +164,10 @@ specs:
   # SPEC: task-display (READY)
   #=========================================================
   task-display:
-    status: in-progress
+    status: done
     file: docs/specs/task-display.md
     appetite: small
-    created: '2025-12-03'
+    completed: '2025-12-03'
     tasks:
       #-------------------------------------------------
       # Task 1: Show Command Handler
@@ -215,7 +215,8 @@ specs:
         depends_on:
           - task-display-1
         estimate: 0.5h
-        status: pending
+        status: done
+        completed: '2025-12-03'
 
 notes: |
   COMPLETED:
@@ -223,8 +224,8 @@ notes: |
   - task-add: 2/2 tasks ✓
   - task-list: 2/2 tasks ✓
   - task-done: 2/2 tasks ✓
+  - task-display: 2/2 tasks ✓
   
-  READY:
-  - task-display: spec ready, awaiting /create-tasks
+  ALL ROADMAP MVP FEATURES COMPLETE! 🎉
   
-  MVP COMPLETE! 🎉 Now adding polish features.
+  Total: 11 tasks, 263 tests passing

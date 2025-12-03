@@ -9,6 +9,7 @@ const packageJson = require('../package.json');
 const { runAdd } = require('./commands/add');
 const { runList } = require('./commands/list');
 const { runDone } = require('./commands/done');
+const { runShow } = require('./commands/show');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -34,6 +35,7 @@ Commands:
   add <text>       Add a new task
   list             List and filter tasks
   done <id>        Mark a task as complete
+  show <id>        Show task details
 
 Options:
   --version, -v    Show version number
@@ -46,6 +48,7 @@ Examples:
   tf list --all
   tf list -p high -t backend
   tf done 1
+  tf show 1
 
 Run 'tf <command> --help' for more information on a specific command.
 `);
@@ -70,6 +73,13 @@ switch (command) {
 
   case 'done': {
     const result = runDone(commandArgs);
+    console.log(result.output);
+    process.exit(result.exitCode);
+    break;
+  }
+
+  case 'show': {
+    const result = runShow(commandArgs);
     console.log(result.output);
     process.exit(result.exitCode);
     break;
